@@ -75,11 +75,23 @@ def edit_user(user_id):
 def edit_user_form(user_id):
     """Edit User Form Submit"""
 
-    return
+    user = User.query.get(user_id)
+
+    user.first_name = request.form["first_name"]
+    user.last_name = request.form["last_name"]
+    user.image_url = request.form["image_url"]
+
+    db.session.commit()
+
+    return redirect('/users')
 
 
 @app.route('/users/<user_id>/delete', methods=["POST"])
 def delete_user(user_id):
     """Delete User Form Submit"""
 
-    return
+    user = User.query.get(user_id)
+
+    db.session.delete(user)
+    db.session.commit()
+    return redirect('/users')
