@@ -20,3 +20,17 @@ class User(db.Model):
     first_name = db.Column(db.String(25), nullable=False)
     last_name = db.Column(db.String(25), nullable=False)
     image_url = db.Column(db.Text, nullable=True, default="https://help.salesforce.com/resource/1579912412000/HelpStaticResource/assets/images/tdxDefaultUserLogo.png")
+
+
+class Post(db.Model):
+    """Post"""
+
+    __tablename__ = "posts"
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    title = db.Column(db.String(25), nullable=False)
+    content = db.Column(db.Text, nullable=False)
+    created_at = db.Column(db.DateTime, server_default=db.func.now())
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+
+    user = db.relationship('User', backref='posts')
