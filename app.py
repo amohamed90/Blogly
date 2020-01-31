@@ -8,7 +8,7 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = "DHFGUSRGHUISHGUISHG"
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///blogly'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SQLALCHEMY_ECHO'] = True
+app.config['SQLALCHEMY_ECHO'] = False
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 
 debug = DebugToolbarExtension(app)
@@ -44,7 +44,8 @@ def add_user_form():
 
     first_name = request.form["first_name"]
     last_name = request.form["last_name"]
-    image_url = request.form["image_url"]
+    image_url = request.form["image_url"] if request.form["image_url"] else None
+
 
     new_user = User(first_name=first_name,
                     last_name=last_name,
@@ -80,7 +81,7 @@ def edit_user_form(user_id):
 
     user.first_name = request.form["first_name"]
     user.last_name = request.form["last_name"]
-    user.image_url = request.form["image_url"]
+    user.image_url = request.form["image_url"] if request.form["image_url"] else 'https://help.salesforce.com/resource/1579912412000/HelpStaticResource/assets/images/tdxDefaultUserLogo.png'
 
     db.session.commit()
 
@@ -111,14 +112,16 @@ def add_post_form(user_id):
     """Show Post Form Submit"""
 
     User.query.get_or_404(user_id)
+
     title = request.form["title"]
     content = request.form["content"]
-
     new_post = Post(title=title,
                     content=content,
                     user_id=int(user_id))
+
     db.session.add(new_post)
     db.session.commit()
+
     return redirect(f'/users/{user_id}')
 
 
@@ -128,6 +131,7 @@ def show_post(post_id):
 
     post = Post.query.get_or_404(post_id)
     user = post.user
+
     return render_template('post-detail.html', post=post, user=user)
 
 @app.route('/posts/<post_id>/edit')
@@ -142,7 +146,6 @@ def edit_post_form(post_id):
     """Handling Edit Post-Form"""
 
     post = Post.query.get_or_404(post_id)
-
     post.title = request.form["title"]
     post.content = request.form["content"]
 
@@ -159,4 +162,5 @@ def delete_post(post_id):
 
     db.session.delete(post)
     db.session.commit()
+    
     return redirect(f'/users/{user.id}')

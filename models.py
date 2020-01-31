@@ -11,8 +11,12 @@ def connect_db(app):
     db.init_app(app)
 
 
+
 class User(db.Model):
     """User"""
+
+    def __repr__(self):
+        return f"{self.id} {self.first_name} {self.last_name}"
 
     __tablename__ = "users"
 
@@ -24,6 +28,9 @@ class User(db.Model):
 
 class Post(db.Model):
     """Post"""
+
+    def __repr__(self):
+        return f"{self.id} {self.title} {self.user_id}"
 
     __tablename__ = "posts"
 

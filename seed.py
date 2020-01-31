@@ -6,7 +6,7 @@ db.drop_all()
 db.create_all()
 
 # Add test users
-user1 = User(first_name='Whiskey', last_name="Dog")
+user1 = User(first_name='Rocky', last_name="Dog")
 user2 = User(first_name='Spike', last_name="Dog", image_url="https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500")
 user3 = User(first_name='Socrates', last_name="Cat", image_url="https://previews.123rf.com/images/racorn/racorn1308/racorn130805649/21341221-profile-portrait-of-a-charming-young-business-woman-being-happy-and-smiling-in-an-office-setting-.jpg")
 
